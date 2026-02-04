@@ -1,0 +1,13 @@
+Hello,
+
+{{ admin_name }} has invited you to join the Agreement Automation System.
+
+Click the link below to create your account:
+{{ signup_link }}
+
+This invitation will expire in 7 days.
+
+If you didn't expect this invitation, you can safely ignore this email.
+
+Best regards,
+The Agreement Automation Team

@@ -1,0 +1,10 @@
+Hello {{ user.email }},
+
+Welcome to the Agreement Automation System!
+
+Your account has been successfully created. You can now log in and start using our platform to automate your agreement generation processes.
+
+If you have any questions or need assistance, please don't hesitate to reach out to our support team.
+
+Best regards,
+The Agreement Automation Team
