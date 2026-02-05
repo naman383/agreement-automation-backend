@@ -89,7 +89,7 @@ class LoginView(APIView):
 
     permission_classes = [AllowAny]
 
-    @method_decorator(ratelimit(key='ip', rate='5/15m', method='POST'))
+    # @method_decorator(ratelimit(key='ip', rate='5/15m', method='POST'))  # Temporarily disabled - cache table needs setup
     def post(self, request):
         """
         Authenticate user and create session.
