@@ -84,15 +84,12 @@ class RegisterView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-@method_decorator(csrf_exempt, name='dispatch')
-@method_decorator(csrf_exempt, name='dispatch')
 class LoginView(APIView):
     """API endpoint for user login."""
 
     permission_classes = [AllowAny]
 
-    # @method_decorator(ratelimit(key='ip', rate='5/15m', method='POST'))  # Temporarily disabled
+    @method_decorator(ratelimit(key='ip', rate='5/15m', method='POST'))
     def post(self, request):
         """
         Authenticate user and create session.
@@ -227,7 +224,6 @@ class CurrentUserView(APIView):
         )
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class PasswordResetRequestView(APIView):
     """API endpoint for password reset request."""
 
@@ -282,7 +278,6 @@ class PasswordResetRequestView(APIView):
         )
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class PasswordResetConfirmView(APIView):
     """API endpoint for password reset confirmation."""
 
@@ -352,7 +347,6 @@ class PasswordResetConfirmView(APIView):
         )
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class InvitationSendView(APIView):
     """API endpoint for sending team invitations (admin only)."""
 
@@ -451,7 +445,6 @@ class InvitationValidateView(APIView):
         )
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class InvitationAcceptView(APIView):
     """API endpoint for accepting invitations and creating accounts."""
 
@@ -557,7 +550,6 @@ class UserListView(APIView):
         )
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class UserRoleUpdateView(APIView):
     """API endpoint for updating user roles (admin only)."""
 
@@ -645,7 +637,6 @@ def invalidate_user_sessions(user_id):
             session.delete()
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class UserDeactivateView(APIView):
     """API endpoint for deactivating user accounts (admin only)."""
 
@@ -719,7 +710,6 @@ class UserDeactivateView(APIView):
         )
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class UserReactivateView(APIView):
     """API endpoint for reactivating user accounts (admin only)."""
 
