@@ -120,12 +120,12 @@ class LoginView(APIView):
             user = User.objects.get(email=email)
             # Check if account is active before authentication
             if not user.is_active:
-                log_audit_event(
-                    user=user,
-                    action='user_login_failed_inactive',
-                    request=request,
-                    email=email
-                )
+                # log_audit_event(  # Temporarily disabled
+                #     user=user,
+                #     action='user_login_failed_inactive',
+                #     request=request,
+                #     email=email
+                # )
                 return Response(
                     {"error": "Account deactivated. Contact administrator."},
                     status=status.HTTP_403_FORBIDDEN
@@ -142,12 +142,12 @@ class LoginView(APIView):
             login(request, user)
 
             # Log successful login
-            log_audit_event(
-                user=user,
-                action='user_login_success',
-                request=request,
-                email=email
-            )
+            # log_audit_event(  # Temporarily disabled
+            #     user=user,
+            #     action='user_login_success',
+            #     request=request,
+            #     email=email
+            # )
 
             # Get CSRF token to send to frontend
             csrf_token = get_token(request)
@@ -165,12 +165,12 @@ class LoginView(APIView):
             )
         else:
             # Log failed login attempt
-            log_audit_event(
-                user=None,
-                action='user_login_failed',
-                request=request,
-                email=email
-            )
+            # log_audit_event(  # Temporarily disabled
+            #     user=None,
+            #     action='user_login_failed',
+            #     request=request,
+            #     email=email
+            # )
 
             return Response(
                 {"error": "Invalid email or password"},
