@@ -90,7 +90,6 @@ class LoginView(APIView):
 
     permission_classes = [AllowAny]
 
-    # @method_decorator(ratelimit(key='ip', rate='5/15m', method='POST'))  # Temporarily disabled - cache table needs setup
     def post(self, request):
         """
         Authenticate user and create session.
@@ -101,16 +100,7 @@ class LoginView(APIView):
             "password": "SecurePass123"
         }
         """
-        # DEBUG: Catch all exceptions and return them
-        try:
-            # Check if rate limited
-            if getattr(request, 'limited', False):
-                return Response(
-                    {"error": "Too many login attempts. Please try again in 15 minutes."},
-                    status=status.HTTP_429_TOO_MANY_REQUESTS
-                )
-
-            serializer = LoginSerializer(data=request.data)
+        serializer = LoginSerializer(data=request.data)
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -123,12 +113,6 @@ class LoginView(APIView):
             user = User.objects.get(email=email)
             # Check if account is active before authentication
             if not user.is_active:
-                # log_audit_event(  # Temporarily disabled
-                #     user=user,
-                #     action='user_login_failed_inactive',
-                #     request=request,
-                #     email=email
-                # )
                 return Response(
                     {"error": "Account deactivated. Contact administrator."},
                     status=status.HTTP_403_FORBIDDEN
@@ -143,14 +127,6 @@ class LoginView(APIView):
         if user is not None:
             # Create session
             login(request, user)
-
-            # Log successful login
-            # log_audit_event(  # Temporarily disabled
-            #     user=user,
-            #     action='user_login_success',
-            #     request=request,
-            #     email=email
-            # )
 
             # Get CSRF token to send to frontend
             csrf_token = get_token(request)
@@ -167,29 +143,9 @@ class LoginView(APIView):
                 status=status.HTTP_200_OK
             )
         else:
-            # Log failed login attempt
-            # log_audit_event(  # Temporarily disabled
-            #     user=None,
-            #     action='user_login_failed',
-            #     request=request,
-            #     email=email
-            # )
-
             return Response(
                 {"error": "Invalid email or password"},
                 status=status.HTTP_400_BAD_REQUEST
-            )
-
-        except Exception as e:
-            # DEBUG: Return actual error
-            import traceback
-            return Response(
-                {
-                    "error": "Server error",
-                    "detail": str(e),
-                    "traceback": traceback.format_exc()
-                },
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
 
