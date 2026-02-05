@@ -100,14 +100,16 @@ class LoginView(APIView):
             "password": "SecurePass123"
         }
         """
-        # Check if rate limited
-        if getattr(request, 'limited', False):
-            return Response(
-                {"error": "Too many login attempts. Please try again in 15 minutes."},
-                status=status.HTTP_429_TOO_MANY_REQUESTS
-            )
+        # DEBUG: Catch all exceptions and return them
+        try:
+            # Check if rate limited
+            if getattr(request, 'limited', False):
+                return Response(
+                    {"error": "Too many login attempts. Please try again in 15 minutes."},
+                    status=status.HTTP_429_TOO_MANY_REQUESTS
+                )
 
-        serializer = LoginSerializer(data=request.data)
+            serializer = LoginSerializer(data=request.data)
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -175,6 +177,18 @@ class LoginView(APIView):
             return Response(
                 {"error": "Invalid email or password"},
                 status=status.HTTP_400_BAD_REQUEST
+            )
+
+        except Exception as e:
+            # DEBUG: Return actual error
+            import traceback
+            return Response(
+                {
+                    "error": "Server error",
+                    "detail": str(e),
+                    "traceback": traceback.format_exc()
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
 
