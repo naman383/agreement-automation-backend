@@ -206,7 +206,8 @@ SESSION_COOKIE_SAMESITE = 'Strict'
 SESSION_SAVE_EVERY_REQUEST = True  # Reset session expiry on each request (idle timeout behavior)
 
 # HTTPS enforcement (NFR8: TLS 1.3)
-SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=not DEBUG, cast=bool)
+# Disabled for Railway - Railway handles HTTPS at load balancer level
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0  # 1 year in production
 SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
 SECURE_HSTS_PRELOAD = not DEBUG
